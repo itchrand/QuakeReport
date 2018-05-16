@@ -16,24 +16,13 @@ class EarthquakeActivity : AppCompatActivity() {
         setContentView(R.layout.earthquake_activity)
 
         // Create a fake list of earthquake locations.
-        val earthquakes = ArrayList<String>()
-        earthquakes.add("San Francisco")
-        earthquakes.add("London")
-        earthquakes.add("Tokyo")
-        earthquakes.add("Mexico City")
-        earthquakes.add("Moscow")
-        earthquakes.add("Rio de Janeiro")
-        earthquakes.add("Paris")
+        val earthquakes = QueryUtils.extractEarthquakes()
 
         // Find a reference to the {@link ListView} in the layout
         val earthquakeListView = findViewById<View>(R.id.list) as ListView
 
-        // Create a new {@link ArrayAdapter} of earthquakes
-        val adapter = ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, earthquakes)
+        val itemsAdapter = EarthquakeAdapter(this, earthquakes, R.color.colorPrimaryLight)
 
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter)
+        earthquakeListView.setAdapter(itemsAdapter)
     }
 }
