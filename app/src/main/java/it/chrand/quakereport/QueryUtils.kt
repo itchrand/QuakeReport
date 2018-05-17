@@ -46,8 +46,9 @@ object QueryUtils {
                 earthquakes.add(
                         Earthquake(propertiesObject.getDouble("mag"),
                                    propertiesObject.getString("place"),
-                                   propertiesObject.getLong("time")
-                ))
+                                   propertiesObject.getLong("time"),
+                                   propertiesObject.getString("url"))
+                )
             }
 
         } catch (e: JSONException) {
