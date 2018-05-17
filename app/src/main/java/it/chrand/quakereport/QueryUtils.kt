@@ -5,9 +5,6 @@ import android.util.Log
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.text.SimpleDateFormat
-
-import java.util.ArrayList
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -39,20 +36,18 @@ object QueryUtils {
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
-            // TODO: Parse the response given by the SAMPLE_JSON_RESPONSE string and
+            // Parse the response given by the SAMPLE_JSON_RESPONSE string and
             // build up a list of Earthquake objects with the corresponding data.
-            val formatter = SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS")
-
             val rootObject = JSONObject(SAMPLE_JSON_RESPONSE)
             val featuresArray = rootObject.getJSONArray("features")
-            for (index in 0..featuresArray.length()) {
+            for (index in 0..featuresArray.length()-1) {
                 val featuresObject = featuresArray.getJSONObject(index)
                 val propertiesObject = featuresObject.getJSONObject("properties")
-                val formatter = SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
                 earthquakes.add(
                         Earthquake(propertiesObject.getDouble("mag"),
                                    propertiesObject.getString("place"),
-                                   formatter.format(propertiesObject.getLong("time"))))
+                                   propertiesObject.getLong("time")
+                ))
             }
 
         } catch (e: JSONException) {
