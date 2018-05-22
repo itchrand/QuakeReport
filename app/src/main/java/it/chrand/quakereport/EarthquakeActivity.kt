@@ -1,19 +1,38 @@
 package it.chrand.quakereport
 
+import android.app.LoaderManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.content.Intent
+import android.content.Loader
 import android.net.Uri
-import android.os.AsyncTask
+import android.util.Log
+import android.widget.TextView
+import java.security.AccessController.getContext
 
-class EarthquakeActivity : AppCompatActivity() {
+class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
     val LOG_TAG = EarthquakeActivity::class.java.name
     private val USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10"
     lateinit var itemsAdapter: EarthquakeAdapter
+
+
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<Earthquake>> {
+        return EarthquakeLoader(this,USGS_REQUEST_URL)
+    }
+
+    override fun onLoadFinished(loader: Loader<List<Earthquake>>?, data: List<Earthquake>?) {
+        itemsAdapter.setEarthquakes(data)
+        (findViewById<View>(R.id.emptyView) as TextView).text = this.getString(R.string.no_earthquakes_found)
+    }
+
+    override fun onLoaderReset(loader: Loader<List<Earthquake>>?) {
+        itemsAdapter.clear()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,52 +51,7 @@ class EarthquakeActivity : AppCompatActivity() {
                 startActivity(i)
         }
 
-        // Kick off an {@link AsyncTask} to perform the network request
-        val task = EarthquakeAsyncTask()
-        task.execute(USGS_REQUEST_URL)
-    }
-
-    /**
-     * Update the UI with the given earthquake information.
-     */
-    private fun updateUi(earthquakes: ArrayList<Earthquake>) {
-        itemsAdapter.clear()
-        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
-        // data set. This will trigger the ListView to update.
-        if (earthquakes != null && !earthquakes.isEmpty()) {
-            itemsAdapter.addAll(earthquakes)
-        }
-    }
-
-    /**
-     * {@link AsyncTask} to perform the network request on a background thread, and then
-     * update the UI with the first earthquake in the response.
-     */
-    inner class EarthquakeAsyncTask : AsyncTask<String, Void, ArrayList<Earthquake>>() {
-
-        override fun doInBackground(vararg urls: String): ArrayList<Earthquake>? {
-            // Don't perform the request if there are no URLs, or the first URL is null.
-            if (urls.size < 1 || urls[0] == null) {
-                return null
-            }
-
-            return QueryUtils.fetchEarthquakeData(urls[0])
-        }
-
-        /**
-         * This method is invoked on the main UI thread after the background work has been
-         * completed.
-         *
-         * It IS okay to modify the UI within this method. We take the [Event] object
-         * (which was returned from the doInBackground() method) and update the views on the screen.
-         */
-        override fun onPostExecute(result: ArrayList<Earthquake>?) {
-            // If there is no result, do nothing.
-            if (result == null) {
-                return
-            }
-
-            updateUi(result)
-        }
+        earthquakeListView.emptyView = findViewById<View>(R.id.emptyView) as TextView
+        loaderManager.initLoader(0, null, this)
     }
 }

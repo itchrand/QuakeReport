@@ -12,14 +12,13 @@ import java.text.DateFormat
 import java.text.DecimalFormat
 import java.util.*
 import android.graphics.drawable.GradientDrawable
-
-
-
+import android.util.Log
 
 private val LOCATION_SEPARATOR = " of "
 
 class EarthquakeAdapter(val getContext: Context, val list: ArrayList<Earthquake>, val backgroundColorId: Int) :
         ArrayAdapter<Earthquake>(getContext, 0, list) {
+    val LOG_TAG = EarthquakeAdapter::class.java.name
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
         var listItemView = convertView
@@ -67,6 +66,17 @@ class EarthquakeAdapter(val getContext: Context, val list: ArrayList<Earthquake>
         // Return the whole list item layout (containing 2 TextViews)
         // so that it can be shown in the ListView
         return listItemView
+    }
+
+    fun setEarthquakes(earthquakes: List<Earthquake>?) {
+
+        list.clear()
+        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+        if (earthquakes != null && !earthquakes.isEmpty()) {
+            list.addAll(earthquakes)
+        }
+        notifyDataSetChanged()
     }
 
     fun getMagnitudeColor(mag: Double): Int {
