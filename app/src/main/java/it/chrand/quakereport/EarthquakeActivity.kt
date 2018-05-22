@@ -1,6 +1,7 @@
 package it.chrand.quakereport
 
 import android.app.LoaderManager
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,10 +9,11 @@ import android.widget.AdapterView
 import android.widget.ListView
 import android.content.Intent
 import android.content.Loader
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
-import android.util.Log
+import android.widget.ProgressBar
 import android.widget.TextView
-import java.security.AccessController.getContext
 
 class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
@@ -21,12 +23,13 @@ class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Li
 
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<Earthquake>> {
-        return EarthquakeLoader(this,USGS_REQUEST_URL)
+        return EarthquakeLoader(this, USGS_REQUEST_URL)
     }
 
     override fun onLoadFinished(loader: Loader<List<Earthquake>>?, data: List<Earthquake>?) {
-        itemsAdapter.setEarthquakes(data)
+        (findViewById<View>(R.id.progress_bar) as ProgressBar).visibility = View.GONE
         (findViewById<View>(R.id.emptyView) as TextView).text = this.getString(R.string.no_earthquakes_found)
+        itemsAdapter.setEarthquakes(data)
     }
 
     override fun onLoaderReset(loader: Loader<List<Earthquake>>?) {
@@ -52,6 +55,18 @@ class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Li
         }
 
         earthquakeListView.emptyView = findViewById<View>(R.id.emptyView) as TextView
-        loaderManager.initLoader(0, null, this)
+        if (!networkConnection()) {
+            (findViewById<View>(R.id.progress_bar) as ProgressBar).visibility = View.GONE
+            (findViewById<View>(R.id.emptyView) as TextView).text = this.getString(R.string.no_internet_connection)
+        } else
+            loaderManager.initLoader(0, null, this)
+    }
+
+    fun networkConnection(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return !(networkInfo == null || !networkInfo.isConnected() ||
+                (networkInfo.getType() != ConnectivityManager.TYPE_WIFI &&
+                 networkInfo.getType() != ConnectivityManager.TYPE_MOBILE))
     }
 }
