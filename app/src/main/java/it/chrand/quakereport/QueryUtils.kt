@@ -20,7 +20,7 @@ import java.nio.charset.Charset
 object QueryUtils {
 
     /** Tag for the log messages  */
-    val LOG_TAG = QueryUtils::class.java!!.getSimpleName()
+    val LOG_TAG = QueryUtils::class.java.getSimpleName()
 
     fun fetchEarthquakeData(requestUrl: String): ArrayList<Earthquake>? {
         // Create URL object
@@ -67,27 +67,27 @@ object QueryUtils {
         var inputStream: InputStream? = null
         try {
             urlConnection = url.openConnection() as HttpURLConnection
-            urlConnection!!.setReadTimeout(10000 /* milliseconds */)
-            urlConnection!!.setConnectTimeout(15000 /* milliseconds */)
-            urlConnection!!.setRequestMethod("GET")
-            urlConnection!!.connect()
+            urlConnection.setReadTimeout(10000 /* milliseconds */)
+            urlConnection.setConnectTimeout(15000 /* milliseconds */)
+            urlConnection.setRequestMethod("GET")
+            urlConnection.connect()
 
             // If the request was successful (response code 200),
             // then read the input stream and parse the response.
-            if (urlConnection!!.getResponseCode() === 200) {
-                inputStream = urlConnection!!.getInputStream()
+            if (urlConnection.getResponseCode() == 200) {
+                inputStream = urlConnection.getInputStream()
                 jsonResponse = readFromStream(inputStream)
             } else {
-                Log.e(LOG_TAG, "Error response code: " + urlConnection!!.getResponseCode())
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode())
             }
         } catch (e: IOException) {
             Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e)
         } finally {
             if (urlConnection != null) {
-                urlConnection!!.disconnect()
+                urlConnection.disconnect()
             }
             if (inputStream != null) {
-                inputStream!!.close()
+                inputStream.close()
             }
         }
         return jsonResponse

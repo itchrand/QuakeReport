@@ -35,7 +35,7 @@ class EarthquakeAdapter(val getContext: Context, val list: ArrayList<Earthquake>
         // Get the object located at this position in the list
         val currentItem = list[position]
 
-        val magTextView = listItemView!!.findViewById(R.id.mag_text) as TextView
+        val magTextView = listItemView.findViewById(R.id.mag_text) as TextView
         magTextView.setText(DecimalFormat("0.0").format(currentItem.magnitude))
         // Set the proper background color on the magnitude circle.
         // Fetch the background from the TextView, which is a GradientDrawable.

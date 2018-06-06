@@ -5,7 +5,6 @@ import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.support.v7.app.AppCompatActivity
 import android.preference.PreferenceManager
-import android.content.SharedPreferences
 import android.preference.ListPreference
 
 
@@ -31,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
         override fun onPreferenceChange(preference: Preference, value: Any): Boolean {
             val stringValue = value.toString()
             if (preference is ListPreference) {
-                val prefIndex = preference.findIndexOfValue(stringValue);
+                val prefIndex = preference.findIndexOfValue(stringValue)
                 if (prefIndex >= 0) {
                     val labels = preference.getEntries()
                     preference.summary = labels[prefIndex]

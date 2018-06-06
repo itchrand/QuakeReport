@@ -70,7 +70,7 @@ class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Li
         itemsAdapter = EarthquakeAdapter(this, ArrayList<Earthquake>(), R.color.colorPrimaryLight)
 
         earthquakeListView.setAdapter(itemsAdapter)
-        earthquakeListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
+        earthquakeListView.onItemClickListener = AdapterView.OnItemClickListener { _adapterView, _view, position, _id ->
             val i = Intent(Intent.ACTION_VIEW,
                     Uri.parse(itemsAdapter.getItem(position).url))
             if (intent.resolveActivity(getPackageManager()) != null)
