@@ -218,17 +218,20 @@ class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Li
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.getItemId()
-        if (id == R.id.action_settings) {
-            val settingsIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingsIntent)
-            return true
+        when (id) {
+            R.id.action_settings -> {
+                val settingsIntent = Intent(this, SettingsActivity::class.java)
+                startActivity(settingsIntent)
+                return true
+            }
+            R.id.menu_refresh -> {
+                swipeRefreshLayout.setRefreshing(true)
+                loaderManager.restartLoader(0, null, this)
+                swipeRefreshLayout.setRefreshing(false)
+                return true
+            }
         }
-        else if (id == R.id.menu_refresh){
-            swipeRefreshLayout!!.setRefreshing(true)
-            loaderManager.restartLoader(0, null, this)
-            swipeRefreshLayout!!.setRefreshing(false)
-            return true
-        }
+
         return super.onOptionsItemSelected(item)
     }
 }
