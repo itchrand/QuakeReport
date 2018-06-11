@@ -2,7 +2,6 @@ package it.chrand.quakereport
 
 import android.content.AsyncTaskLoader
 import android.content.Context
-import android.util.Log
 
 class EarthquakeLoader(context: Context, val url: String)
     : AsyncTaskLoader<List<Earthquake>>(context) {

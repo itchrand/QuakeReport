@@ -3,4 +3,41 @@
     <string name="near_the">Near the</string>
     <string name="no_earthquakes_found">No earthquakes found!</string>
     <string name="no_internet_connection">No internet connection!</string>
+    <string name="no_location_found">No my location found! Going worldwide</string>
+    <string name="menu_refresh">Refresh</string>
+    <!-- Settings Menu Item [CHAR LIMIT=NONE] -->
+    <string name="settings_menu_item">Settings</string>
+    <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
+    <string name="settings_title">Earthquake Settings</string>
+    <!-- Strings For Minimum Magnitude Preference [CHAR LIMIT=30] -->
+    <string name="settings_min_magnitude_label">Minimum Magnitude</string>
+    <string name="settings_min_magnitude_key" translatable="false">min_magnitude</string>
+    <string name="settings_min_magnitude_default" translatable="false">6</string>
+    <!-- Strings For Order-By Preference [CHAR LIMIT=30] -->
+    <string name="settings_order_by_label">Order By</string>
+    <string name="settings_order_by_key" translatable="false">order_by</string>
+    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_magnitude_value</string>
+    <!-- Strings For search-nearby Preference [CHAR LIMIT=30] -->
+    <string name="settings_search_mode_label">Search mode</string>
+    <string name="settings_search_mode_key" translatable="false">search_nearby</string>
+    <string name="settings_search_mode_default" translatable="false">@string/settings_search_mode_worldwide_value</string>
+    <!-- Strings For Location radius Preference [CHAR LIMIT=30] -->
+    <string name="settings_search_radius_label">Search radius in km around my location</string>
+    <string name="settings_search_radius_key" translatable="false">radius_location</string>
+    <string name="settings_search_radius_default" translatable="false">100</string>
+
+
+    <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
+    <string name="settings_order_by_magnitude_label">Magnitude</string>
+    <string name="settings_order_by_magnitude_value" translatable="false">magnitude</string>
+    <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
+    <string name="settings_order_by_most_recent_label">Most Recent</string>
+    <string name="settings_order_by_most_recent_value" translatable="false">time</string>
+
+    <!-- Label for search by worldwide option [CHAR LIMIT=20] -->
+    <string name="settings_search_mode_worldwide_label">Worldwide</string>
+    <string name="settings_search_mode_worldwide_value" translatable="false">worldwide</string>
+    <!-- Label for search by closed circle option [CHAR LIMIT=20] -->
+    <string name="settings_search_mode_mylocation_label">My location with radius</string>
+    <string name="settings_search_mode_mylocation_value" translatable="false">mylocation</string>
 </resources>
