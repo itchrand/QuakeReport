@@ -16,4 +16,18 @@
         android:selectAllOnFocus="true"
         android:title="@string/settings_min_magnitude_label"/>
 
+    <ListPreference
+        android:defaultValue="@string/settings_search_mode_default"
+        android:entries="@array/settings_search_mode_labels"
+        android:entryValues="@array/settings_search_mode_values"
+        android:key="@string/settings_search_mode_key"
+        android:title="@string/settings_search_mode_label" />
+
+    <EditTextPreference
+        android:defaultValue="@string/settings_search_radius_default"
+        android:inputType="numberDecimal"
+        android:key="@string/settings_search_radius_key"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_search_radius_label"/>
+
 </PreferenceScreen>

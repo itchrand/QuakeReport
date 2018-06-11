@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!-- Layout for a list of earthquakes -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-           xmlns:tools="http://schemas.android.com/tools"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
+<!-- Layout for a list of earthquakes -->
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ListView android:id="@+id/list"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:divider="@null"
-              android:dividerHeight="0dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView android:id="@+id/emptyView"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_centerInParent="true"
-              tools:text="No Earthquakes found"/>
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:orientation="vertical"/>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="No Earthquakes found"/>
 
-</RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

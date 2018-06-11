@@ -1,32 +1,39 @@
 package it.chrand.quakereport
 
+import android.Manifest
 import android.app.LoaderManager
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ListView
 import android.content.Intent
 import android.content.Loader
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.preference.PreferenceManager
-import android.content.SharedPreferences
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v4.widget.SwipeRefreshLayout
+import android.widget.*
 
 
-class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Earthquake>> {
+class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Earthquake>>, SwipeRefreshLayout.OnRefreshListener {
 
-    val LOG_TAG = EarthquakeActivity::class.java.name
+    private val LOG_TAG = EarthquakeActivity::class.java.name
+    private val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
+    private var permissionGranted_access_fine_location = false
     private val USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query"
     //private val USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10"
     lateinit var itemsAdapter: EarthquakeAdapter
-
+    lateinit var mLocationManager: LocationManager
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<Earthquake>> {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
@@ -36,6 +43,12 @@ class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Li
         val orderBy = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default))
+        val searchMode = sharedPrefs.getString(
+                getString(R.string.settings_search_mode_key),
+                getString(R.string.settings_search_mode_default))
+        val searchRadius = sharedPrefs.getString(
+                getString(R.string.settings_search_radius_key),
+                getString(R.string.settings_search_radius_default))
 
         val baseUri = Uri.parse(USGS_REQUEST_URL)
         val uriBuilder = baseUri.buildUpon()
@@ -45,8 +58,99 @@ class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Li
         uriBuilder.appendQueryParameter("limit", "10")
         uriBuilder.appendQueryParameter("minmag", minMagnitude)
         uriBuilder.appendQueryParameter("orderby", orderBy)
+        if (searchMode != "worldwide") {
+            val (valid, latitude, longitude) = getLocation()
+            if (valid) {
+                uriBuilder.appendQueryParameter("latitude", latitude.toString())
+                uriBuilder.appendQueryParameter("longitude", longitude.toString())
+                uriBuilder.appendQueryParameter("maxradiuskm", searchRadius)
+            } else {
+                val toast = Toast.makeText(applicationContext, R.string.no_location_found, Toast.LENGTH_LONG)
+                toast.show()
+            }
+        }
 
         return EarthquakeLoader(this, uriBuilder.toString())
+    }
+
+    private fun getLocation(): Triple<Boolean, Double, Double> {
+
+        val location = checkPermissionsGetLocation()
+        if (location != null)
+            return Triple(true, location.getLatitude(), location.getLongitude())
+        else
+            return Triple(false, 0.0, 0.0)
+    }
+
+    private fun checkPermissionsGetLocation(): Location? {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                TODO()
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else
+            permissionGranted_access_fine_location = true
+
+        if (permissionGranted_access_fine_location) {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, 0f, locationListener)
+            return mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            // mLocationManager.removeUpdates(locationListener)
+        }
+
+        return null
+    }
+
+    //define the listener
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            // val thetext = "" + location.longitude + ":" + location.latitude
+            // val toast = Toast.makeText(applicationContext, thetext, Toast.LENGTH_SHORT)
+            // toast.show()
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    permissionGranted_access_fine_location = true
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    permissionGranted_access_fine_location = false
+                }
+                return
+            }
+
+        // Add other 'when' lines to check for other
+        // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
+        }
     }
 
     override fun onLoadFinished(loader: Loader<List<Earthquake>>?, data: List<Earthquake>?) {
@@ -59,13 +163,27 @@ class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Li
         itemsAdapter.clear()
     }
 
+    /*
+     * Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
+     * performs a swipe-to-refresh gesture.
+     */
+    override fun onRefresh() {
+        // This method performs the actual data-refresh operation.
+        // The method calls setRefreshing(false) when it's finished.
+        loaderManager.restartLoader(0, null, this)
+        swipeRefreshLayout.setRefreshing(false)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.earthquake_activity)
 
+        mLocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+
         // Find a reference to the {@link ListView} in the layout
         val earthquakeListView = findViewById<View>(R.id.list) as ListView
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setOnRefreshListener(this)
 
         itemsAdapter = EarthquakeAdapter(this, ArrayList<Earthquake>(), R.color.colorPrimaryLight)
 
@@ -103,6 +221,12 @@ class EarthquakeActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Li
         if (id == R.id.action_settings) {
             val settingsIntent = Intent(this, SettingsActivity::class.java)
             startActivity(settingsIntent)
+            return true
+        }
+        else if (id == R.id.menu_refresh){
+            swipeRefreshLayout!!.setRefreshing(true)
+            loaderManager.restartLoader(0, null, this)
+            swipeRefreshLayout!!.setRefreshing(false)
             return true
         }
         return super.onOptionsItemSelected(item)

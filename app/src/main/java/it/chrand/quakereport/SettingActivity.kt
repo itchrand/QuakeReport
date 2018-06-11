@@ -25,6 +25,13 @@ class SettingsActivity : AppCompatActivity() {
 
             val orderBy = findPreference(getString(R.string.settings_order_by_key))
             bindPreferenceSummaryToValue(orderBy)
+
+            val searchMode = findPreference(getString(R.string.settings_search_mode_key))
+            bindPreferenceSummaryToValue(searchMode)
+
+            val searchRadius = findPreference(getString(R.string.settings_search_radius_key))
+            bindPreferenceSummaryToValue(searchRadius)
+
         }
 
         override fun onPreferenceChange(preference: Preference, value: Any): Boolean {

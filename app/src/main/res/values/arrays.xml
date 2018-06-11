@@ -9,4 +9,14 @@
         <item>@string/settings_order_by_magnitude_value</item>
         <item>@string/settings_order_by_most_recent_value</item>
     </string-array>
+
+    <string-array name="settings_search_mode_labels">
+        <item>@string/settings_search_mode_worldwide_label</item>
+        <item>@string/settings_search_mode_mylocation_label</item>
+    </string-array>
+
+    <string-array name="settings_search_mode_values">
+        <item>@string/settings_search_mode_worldwide_value</item>
+        <item>@string/settings_search_mode_mylocation_value</item>
+    </string-array>
 </resources>
