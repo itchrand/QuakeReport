@@ -7,7 +7,7 @@
         android:entries="@array/settings_order_by_labels"
         android:entryValues="@array/settings_order_by_values"
         android:key="@string/settings_order_by_key"
-        android:title="@string/settings_order_by_label" />
+        android:title="@string/settings_order_by_label"/>
 
     <EditTextPreference
         android:defaultValue="@string/settings_min_magnitude_default"
@@ -16,18 +16,37 @@
         android:selectAllOnFocus="true"
         android:title="@string/settings_min_magnitude_label"/>
 
-    <ListPreference
-        android:defaultValue="@string/settings_search_mode_default"
-        android:entries="@array/settings_search_mode_labels"
-        android:entryValues="@array/settings_search_mode_values"
-        android:key="@string/settings_search_mode_key"
-        android:title="@string/settings_search_mode_label" />
+    <PreferenceCategory
+        android:layout="@layout/preferences_category"
+        android:title="@string/settings_search_preference_title">
+        <ListPreference
+            android:defaultValue="@string/settings_search_mode_default"
+            android:entries="@array/settings_search_mode_labels"
+            android:entryValues="@array/settings_search_mode_values"
+            android:key="@string/settings_search_mode_key"
+            android:title="@string/settings_search_mode_label"/>
 
-    <EditTextPreference
-        android:defaultValue="@string/settings_search_radius_default"
-        android:inputType="numberDecimal"
-        android:key="@string/settings_search_radius_key"
-        android:selectAllOnFocus="true"
-        android:title="@string/settings_search_radius_label"/>
+        <EditTextPreference
+            android:defaultValue="@string/settings_search_radius_default"
+            android:inputType="numberDecimal"
+            android:key="@string/settings_search_radius_key"
+            android:selectAllOnFocus="true"
+            android:title="@string/settings_search_radius_label"/>
+    </PreferenceCategory>
 
+    <PreferenceCategory
+        android:layout="@layout/preferences_category"
+        android:title="@string/settings_about">
+        <Preference
+            android:summary="@string/settings_about_version_summary"
+            android:title="@string/settings_about_version_title">
+        </Preference>
+        <Preference
+            android:summary="@string/settings_about_author_summary"
+            android:title="@string/settings_about_author_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.chrand.it"/>
+        </Preference>
+    </PreferenceCategory>
 </PreferenceScreen>

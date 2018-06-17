@@ -3,6 +3,7 @@
     <color name="colorPrimary">#607D8B</color>
     <color name="colorPrimaryDark">#455A64</color>
     <color name="colorPrimaryLight">#ECEFF1</color>
+    <!--color name="colorAccent">#10CAC9</color -->
     <color name="colorAccent">#10CAC9</color>
 
     <!-- Color for an earthquake with magnitude 0 and 2 -->
