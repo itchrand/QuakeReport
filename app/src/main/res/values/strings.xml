@@ -5,7 +5,7 @@
     <string name="settings_about_author_title">Author:</string>
     <string name="settings_about_author_summary" translatable="false">Andre Christanell &lt;web&gt;</string>
     <string name="settings_about_version_title">Version:</string>
-    <string name="settings_about_version_summary" translatable="false">1.1</string>
+    <string name="settings_about_version_summary" translatable="false">1.2</string>
 
     <string name="near_the">Near the</string>
     <string name="no_earthquakes_found">No earthquakes found!</string>
