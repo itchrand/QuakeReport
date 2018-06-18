@@ -1,9 +1,16 @@
 <resources>
     <string name="app_name">Quake Report</string>
+
+    <string name="settings_about">About</string>
+    <string name="settings_about_author_title">Author:</string>
+    <string name="settings_about_author_summary" translatable="false">Andre Christanell &lt;web&gt;</string>
+    <string name="settings_about_version_title">Version:</string>
+    <string name="settings_about_version_summary" translatable="false">1.1</string>
+
     <string name="near_the">Near the</string>
     <string name="no_earthquakes_found">No earthquakes found!</string>
     <string name="no_internet_connection">No internet connection!</string>
-    <string name="no_location_found">No my location found! Going worldwide</string>
+    <string name="no_location_found">My location not found! Going worldwide</string>
     <string name="menu_refresh">Refresh</string>
     <!-- Settings Menu Item [CHAR LIMIT=NONE] -->
     <string name="settings_menu_item">Settings</string>
@@ -18,6 +25,8 @@
     <string name="settings_order_by_key" translatable="false">order_by</string>
     <string name="settings_order_by_default" translatable="false">@string/settings_order_by_magnitude_value</string>
     <!-- Strings For search-nearby Preference [CHAR LIMIT=30] -->
+    <string name="settings_search_preference_title">Search settings</string>
+    <string name="settings_search_preference_key" translatable="false">Search settingsXX</string>
     <string name="settings_search_mode_label">Search mode</string>
     <string name="settings_search_mode_key" translatable="false">search_nearby</string>
     <string name="settings_search_mode_default" translatable="false">@string/settings_search_mode_worldwide_value</string>
@@ -25,7 +34,6 @@
     <string name="settings_search_radius_label">Search radius in km around my location</string>
     <string name="settings_search_radius_key" translatable="false">radius_location</string>
     <string name="settings_search_radius_default" translatable="false">100</string>
-
 
     <!-- Label for order-by magnitude option [CHAR LIMIT=20] -->
     <string name="settings_order_by_magnitude_label">Magnitude</string>
@@ -40,4 +48,5 @@
     <!-- Label for search by closed circle option [CHAR LIMIT=20] -->
     <string name="settings_search_mode_mylocation_label">My location with radius</string>
     <string name="settings_search_mode_mylocation_value" translatable="false">mylocation</string>
+
 </resources>
